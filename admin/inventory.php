@@ -70,6 +70,24 @@ include dirname(__DIR__) . '/includes/header.php';
             </div>
         <?php endif; ?>
 
+        <?php if (isset($_GET['msg']) && $_GET['msg'] === 'success'): ?>
+            <div class="kingsman-alert success mb-4">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-check-circle fs-4 me-3"></i>
+                    <div>Room inventory successfully updated.</div>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($_GET['msg']) && $_GET['msg'] === 'deleted'): ?>
+            <div class="kingsman-alert success mb-4">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-check-circle fs-4 me-3"></i>
+                    <div>Room successfully removed from inventory.</div>
+                </div>
+            </div>
+        <?php endif; ?>
+
         <div class="card kingsman-card p-4 shadow-lg border-gold">
             <div class="table-responsive">
                 <table class="table table-dark table-hover mb-0">
@@ -97,11 +115,17 @@ include dirname(__DIR__) . '/includes/header.php';
                                     </span>
                                 </td>
                                 <td class="pe-4 text-end">
-                                    <button class="btn text-white  btn-outline-gold btn-sm py-0 px-2 small me-2"
-                                        onclick='editRoom(<?php echo json_encode($item); ?>)'>EDIT</button>
-                                    <a href="inventory.php?delete_id=<?php echo $item['id']; ?>"
-                                        class="btn btn-outline-danger btn-sm py-0 px-2 small"
-                                        onclick="return confirm('Permanently remove this room from inventory?')">DELETE</a>
+                                    <div class="btn-group">
+                                        <button class="btn btn-outline-white    text-white      btn-sm px-2 border-0"
+                                            onclick='editRoom(<?php echo json_encode($item); ?>)' title="Edit Protocol">
+                                            <i class="bi bi-pencil-square fs-6"></i>
+                                        </button>
+                                        <button class="btn btn-outline-danger btn-sm px-2 border-0"
+                                            onclick="confirmDelete('inventory.php?delete_id=<?php echo $item['id']; ?>')"
+                                            title="Purge Inventory">
+                                            <i class="bi bi-trash fs-6"></i>
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -160,6 +184,10 @@ include dirname(__DIR__) . '/includes/header.php';
     </div>
 </div>
 
+<!-- SweetAlert2 CSS & JS -->
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+
 <script>
     function clearRoomModal() {
         document.getElementById('m_room_id').value = '';
@@ -176,6 +204,30 @@ include dirname(__DIR__) . '/includes/header.php';
         document.getElementById('m_status').value = data.status;
         document.getElementById('roomModalTitle').innerText = 'Edit Room Details';
         new bootstrap.Modal(document.getElementById('roomModal')).show();
+    }
+
+    function confirmDelete(url) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This action cannot be undone. Room will be permanently removed.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#2b2b2b',
+            confirmButtonText: 'Yes, delete it!',
+            background: '#1a1a1a',
+            color: '#cda434',
+            customClass: {
+                popup: 'border border-gold kingsman-card',
+                confirmButton: 'btn btn-outline-danger',
+                cancelButton: 'btn btn-outline-secondary'
+            },
+            buttonsStyling: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
     }
 </script>
 

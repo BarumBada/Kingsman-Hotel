@@ -36,46 +36,67 @@ include dirname(__DIR__) . '/includes/header.php';
                     <p class="lead text-muted mb-0">Welcome back. Property operations are nominal.</p>
                 </div>
                 <div class="ms-auto">
-                    <a href="reports.php" class="btn btn-kingsman btn-lg px-4">Operational Reports</a>
+                    <a href="<?php echo dirname($_SERVER['PHP_SELF']); ?>/reports.php"
+                        class="btn btn-kingsman btn-lg px-4">Operational Reports</a>
                 </div>
             </div>
         </div>
 
         <div class="row g-4">
             <div class="col-md-3">
-                <div class="card kingsman-card text-center p-4 glass-panel border-0 shadow">
-                    <i class="bi bi-people gold-text mb-3 fs-3"></i>
-                    <h5 class="text-muted small text-uppercase mb-1">Total Guests</h5>
-                    <h2 class="gold-text mb-0"><?php echo $total_users; ?></h2>
-                </div>
+                <a href="<?php echo dirname($_SERVER['PHP_SELF']); ?>/admin/guests.php"
+                    class="text-decoration-none d-block h-100">
+                    <div class="card kingsman-card text-center p-4 glass-panel border-0 shadow h-100"
+                        style="transition: transform 0.2s; cursor: pointer;"
+                        onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                        <i class="bi bi-people gold-text mb-3 fs-3"></i>
+                        <h5 class="text-muted small text-uppercase mb-1">Total Guests</h5>
+                        <h2 class="gold-text mb-0"><?php echo $total_users; ?></h2>
+                    </div>
+                </a>
             </div>
             <div class="col-md-3">
-                <div class="card kingsman-card text-center p-4 glass-panel border-0 shadow">
-                    <i class="bi bi-door-open gold-text mb-3 fs-3"></i>
-                    <h5 class="text-muted small text-uppercase mb-1">Inventory</h5>
-                    <h2 class="gold-text mb-0"><?php echo $total_rooms; ?></h2>
-                </div>
+                <a href="<?php echo dirname($_SERVER['PHP_SELF']); ?>/admin/inventory.php"
+                    class="text-decoration-none d-block h-100">
+                    <div class="card kingsman-card text-center p-4 glass-panel border-0 shadow h-100"
+                        style="transition: transform 0.2s; cursor: pointer;"
+                        onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                        <i class="bi bi-door-open gold-text mb-3 fs-3"></i>
+                        <h5 class="text-muted small text-uppercase mb-1">Inventory</h5>
+                        <h2 class="gold-text mb-0"><?php echo $total_rooms; ?></h2>
+                    </div>
+                </a>
             </div>
             <div class="col-md-3">
-                <div class="card kingsman-card text-center p-4 glass-panel border-0 shadow">
-                    <i class="bi bi-calendar-check gold-text mb-3 fs-3"></i>
-                    <h5 class="text-muted small text-uppercase mb-1">Pending Requests</h5>
-                    <h2 class="gold-text mb-0"><?php echo $total_bookings_pending; ?></h2>
-                </div>
+                <a href="<?php echo dirname($_SERVER['PHP_SELF']); ?>/admin/bookings.php?status_filter=pending"
+                    class="text-decoration-none d-block h-100">
+                    <div class="card kingsman-card text-center p-4 glass-panel border-0 shadow h-100"
+                        style="transition: transform 0.2s; cursor: pointer;"
+                        onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                        <i class="bi bi-calendar-check gold-text mb-3 fs-3"></i>
+                        <h5 class="text-muted small text-uppercase mb-1">Pending Requests</h5>
+                        <h2 class="gold-text mb-0"><?php echo $total_bookings_pending; ?></h2>
+                    </div>
+                </a>
             </div>
             <div class="col-md-3">
-                <div class="card kingsman-card text-center p-4 glass-panel border-0 shadow">
-                    <i class="bi bi-currency-dollar gold-text mb-3 fs-3"></i>
-                    <h5 class="text-muted small text-uppercase mb-1">Total Revenue</h5>
-                    <h2 class="gold-text mb-0">₱<?php echo number_format($total_revenue, 0); ?></h2>
-                </div>
+                <a href="<?php echo dirname($_SERVER['PHP_SELF']); ?>/admin/reports.php"
+                    class="text-decoration-none d-block h-100">
+                    <div class="card kingsman-card text-center p-4 glass-panel border-0 shadow h-100"
+                        style="transition: transform 0.2s; cursor: pointer;"
+                        onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                        <i class="bi bi-currency-dollar gold-text mb-3 fs-3"></i>
+                        <h5 class="text-muted small text-uppercase mb-1">Total Revenue</h5>
+                        <h2 class="gold-text mb-0">₱<?php echo number_format($total_revenue, 0); ?></h2>
+                    </div>
+                </a>
             </div>
         </div>
 
         <div class="mt-5">
             <h3 class="mb-4">Recent Activity</h3>
             <div class="table-responsive">
-                <table class="table table-kingsman">
+                <table class="table table-dark table-hover mb-0">
                     <thead>
                         <tr>
                             <th>Reference</th>
@@ -107,7 +128,8 @@ include dirname(__DIR__) . '/includes/header.php';
                         <?php else:
                             foreach ($recent_ops as $op):
                                 ?>
-                                <tr>
+                                <tr onclick="window.location='<?php echo dirname($_SERVER['PHP_SELF']); ?>admin/bookings.php'"
+                                    style="cursor: pointer;" title="View Booking">
                                     <td class="gold-text fw-bold"><?php echo htmlspecialchars($op['booking_reference']); ?></td>
                                     <td><?php echo htmlspecialchars($op['firstname'] . ' ' . $op['lastname']); ?></td>
                                     <td><?php echo htmlspecialchars($op['type_name']); ?></td>

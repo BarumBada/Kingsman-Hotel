@@ -39,12 +39,12 @@ try {
 
     echo "Seeding Room Categories...\n";
     $room_types = [
-        ['The Windsor Suite', 'Pure elegance. Perfect for the modern connoisseur of fine living.', 15500.00, 2, 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&q=80&w=800'],
-        ['The Mayfair Quarters', 'Sharp, sophisticated, and incredibly comfortable for business elites.', 12000.00, 2, 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&q=80&w=800'],
-        ['The Savoy Penthouse', 'High-tech amenities and panoramic city views from the highest point.', 45000.00, 4, 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=800'],
-        ['The Chelsea Deluxe', 'Experience refined luxury with a private balcony overlooking our botanical gardens.', 8500.00, 2, 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&q=80&w=800'],
-        ['The Westminster Executive', 'Designed for the modern professional, offering panoramic city views and a high-end workstation.', 12500.00, 2, 'https://images.unsplash.com/photo-1591088398332-8a77d4966841?auto=format&fit=crop&q=80&w=800'],
-        ['The Kensington Family Suite', 'Spacious and inclusive. Two connected rooms with a shared lounge area for the perfect family getaway.', 18000.00, 5, 'https://images.unsplash.com/photo-1578683062331-db6689d71c4d?auto=format&fit=crop&q=80&w=800']
+        ['The Windsor Suite', 'Pure elegance. Perfect for the modern connoisseur of fine living.', 15500.00, 2, '/assets/img/arthur.jpg'],
+        ['The Mayfair Quarters', 'Sharp, sophisticated, and incredibly comfortable for business elites.', 12000.00, 2, '/assets/img/galahad.jpg'],
+        ['The Savoy Penthouse', 'High-tech amenities and panoramic city views from the highest point.', 45000.00, 4, '/assets/img/hero.jpg'],
+        ['The Chelsea Deluxe', 'Experience refined luxury with a private balcony overlooking our botanical gardens.', 8500.00, 2, '/assets/img/merlin.jpg'],
+        ['The Westminster Executive', 'Designed for the modern professional, offering panoramic city views and a high-end workstation.', 12500.00, 2, '/assets/img/hero.jpg'],
+        ['The Kensington Family Suite', 'Spacious and inclusive. Two connected rooms with a shared lounge area for the perfect family getaway.', 18000.00, 5, '/assets/img/galahad.jpg']
     ];
 
     foreach ($room_types as $rt) {
@@ -71,7 +71,7 @@ try {
         ['hero_subtitle', 'Experience the pinnacle of discrete luxury and personalized service at the Kingsman Hotel.'],
         ['about_title', 'Our Legacy of Excellence'],
         ['about_text', 'For over a century, the Kingsman has been the destination of choice for detail-oriented travelers. We combine classic elegance with modern operational efficiency.'],
-        ['about_img', 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=1200']
+        ['about_img', '/assets/img/arthur.jpg']
     ];
 
     foreach ($settings as $s) {

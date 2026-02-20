@@ -89,12 +89,19 @@ include dirname(__DIR__) . '/includes/header.php';
                                 </span>
                             </div>
                             <div class="d-flex gap-2">
-                                <a href="rooms.php?toggle_status=<?php echo $room['status'] == 'active' ? 'archived' : 'active'; ?>&id=<?php echo $room['id']; ?>"
-                                    class="btn btn-outline-<?php echo $room['status'] == 'active' ? 'danger' : 'success'; ?> btn-sm flex-grow-1">
-                                    <?php echo $room['status'] == 'active' ? 'Archive' : 'Activate'; ?>
+                                <a href="#"
+                                    onclick="confirmToggle('rooms.php?toggle_status=<?php echo $room['status'] == 'active' ? 'archived' : 'active'; ?>&id=<?php echo $room['id']; ?>', '<?php echo $room['status'] == 'active' ? 'Archive' : 'Activate'; ?>')"
+                                    class="btn btn-outline-<?php echo $room['status'] == 'active' ? 'danger' : 'success'; ?> btn-sm flex-grow-1 d-flex align-items-center justify-content-center"
+                                    title="<?php echo $room['status'] == 'active' ? 'Archive Protocol' : 'Activate Protocol'; ?>">
+                                    <i
+                                        class="bi <?php echo $room['status'] == 'active' ? 'bi-archive' : 'bi-check-circle'; ?> me-2"></i>
+                                    <?php echo $room['status'] == 'active' ? 'ARCHIVE' : 'ACTIVATE'; ?>
                                 </a>
-                                <button class="btn btn-kingsman btn-sm flex-grow-1"
-                                    onclick="editSuite(<?php echo htmlspecialchars(json_encode($room)); ?>)">Edit</button>
+                                <button class="btn btn-kingsman btn-sm px-3"
+                                    onclick="editSuite(<?php echo htmlspecialchars(json_encode($room)); ?>)"
+                                    title="Modify Suite Parameters">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -143,6 +150,10 @@ include dirname(__DIR__) . '/includes/header.php';
     </div>
 </div>
 
+<!-- SweetAlert2 CSS & JS -->
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+
 <script>
     function clearModal() {
         document.getElementById('room_id').value = '';
@@ -161,6 +172,32 @@ include dirname(__DIR__) . '/includes/header.php';
         document.getElementById('max_capacity').value = room.max_capacity;
         document.getElementById('modalTitle').innerText = 'Edit Room Category';
         new bootstrap.Modal(document.getElementById('suiteModal')).show();
+    }
+
+    function confirmToggle(url, action) {
+        let actionWord = action.toLowerCase();
+        let isArchive = actionWord === 'archive';
+        Swal.fire({
+            title: `Confirm ${action}?`,
+            text: `Are you sure you want to ${actionWord} this room category?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: isArchive ? '#d33' : '#198754',
+            cancelButtonColor: '#2b2b2b',
+            confirmButtonText: `Yes, ${actionWord} it!`,
+            background: '#1a1a1a',
+            color: '#cda434',
+            customClass: {
+                popup: 'border border-gold kingsman-card',
+                confirmButton: isArchive ? 'btn btn-outline-danger' : 'btn btn-outline-success',
+                cancelButton: 'btn btn-outline-secondary ms-2'
+            },
+            buttonsStyling: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
     }
 </script>
 

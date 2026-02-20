@@ -225,19 +225,22 @@ include dirname(__DIR__) . '/includes/header.php';
                                                 <?php echo strtoupper($booking['status']); ?>
                                             </span>
                                         </td>
-                                        <td>
-                                            <?php if ($booking['status'] == 'pending' || $booking['status'] == 'confirmed'): ?>
-                                                <a href="index.php?cancel_id=<?php echo $booking['id']; ?>"
-                                                    class="btn btn-outline-danger btn-sm"
-                                                    onclick="return confirm('Cancel this reservation? This action cannot be undone.')">
-                                                    Cancel
-                                                </a>
-                                            <?php else: ?>
+                                        <td class="text-end pe-3">
+                                            <div class="d-flex justify-content-end gap-1">
+                                                <?php if ($booking['status'] == 'pending' || $booking['status'] == 'confirmed'): ?>
+                                                    <a href="index.php?cancel_id=<?php echo $booking['id']; ?>"
+                                                        class="btn btn-outline-danger btn-sm border-0 px-2"
+                                                        onclick="return confirm('Abort Reservation: Are you sure you wish to cancel your stay?')"
+                                                        title="Cancel Reservation">
+                                                        <i class="bi bi-x-circle fs-6"></i>
+                                                    </a>
+                                                <?php endif; ?>
                                                 <a href="print_receipt.php?id=<?php echo $booking['id']; ?>" target="_blank"
-                                                    class="btn btn-outline-gold btn-sm">
-                                                    <i class="bi bi-printer"></i>
+                                                    class="btn btn-outline-gold btn-sm border-0 px-2"
+                                                    title="Print Strategic Receipt">
+                                                    <i class="bi bi-printer fs-6"></i>
                                                 </a>
-                                            <?php endif; ?>
+                                            </div>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -284,8 +287,10 @@ include dirname(__DIR__) . '/includes/header.php';
                                                     </td>
                                                     <td class="pe-4 text-end">
                                                         <a href="print_receipt.php?id=<?php echo $booking['id']; ?>"
-                                                            target="_blank" class="btn btn-outline-gold btn-sm py-0 px-2"
-                                                            style="font-size: 0.7rem;">Receipt</a>
+                                                            target="_blank" class="btn btn-outline-gold btn-sm border-0 px-2"
+                                                            title="Review Strategic Receipt">
+                                                            <i class="bi bi-printer fs-6"></i>
+                                                        </a>
                                                     </td>
                                                 </tr>
                                                 <?php

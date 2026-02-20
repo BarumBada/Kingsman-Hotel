@@ -28,8 +28,11 @@ while ($row = $stmt->fetch()) {
         <div class="row g-4">
             <?php
             require_once 'config/db.php';
-            $stmt = $pdo->query("SELECT * FROM room_types WHERE status = 'active'");
+            $stmt = $pdo->query("SELECT rt.*, 
+                                 (SELECT COUNT(*) FROM rooms r WHERE r.room_type_id = rt.id AND r.status = 'available') as available_count
+                                 FROM room_types rt WHERE rt.status = 'active'");
             while ($row = $stmt->fetch()):
+                $is_available = $row['available_count'] > 0;
                 ?>
                 <div class="col-md-4 reveal">
                     <div class="card kingsman-card h-100">
@@ -37,16 +40,30 @@ while ($row = $stmt->fetch()) {
                             alt="<?php echo htmlspecialchars($row['type_name']); ?>"
                             style="height: 250px; object-fit: cover; background-color: #222;">
                         <div class="card-body text-center p-4">
-                            <h3 class="h4 gold-text text-uppercase">
+                            <h3 class="h4 gold-text text-uppercase position-relative d-inline-block">
                                 <a href="room_details.php?id=<?php echo $row['id']; ?>"
                                     class="text-decoration-none gold-text"><?php echo htmlspecialchars($row['type_name']); ?></a>
+                                <?php if ($is_available): ?>
+                                    <span
+                                        class="position-absolute top-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle"
+                                        style="width: 10px; height: 10px;" title="Available"></span>
+                                <?php else: ?>
+                                    <span
+                                        class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"
+                                        style="width: 10px; height: 10px;" title="Fully Booked"></span>
+                                <?php endif; ?>
                             </h3>
                             <p class=" small"><?php echo htmlspecialchars($row['description']); ?></p>
                             <h4 class="mb-3">₱<?php echo number_format($row['price_per_night'], 2); ?> <small
                                     class=" fs-6">/ night</small></h4>
                             <div class="d-grid gap-2">
-                                <?php $booking_url = isset($_SESSION['user_id']) ? "book_room.php?id=" . $row['id'] : "login.php"; ?>
-                                <a href="<?php echo $booking_url; ?>" class="btn btn-kingsman">Book Now</a>
+                                <?php if ($is_available): ?>
+                                    <?php $booking_url = isset($_SESSION['user_id']) ? "book_room.php?id=" . $row['id'] : "login.php"; ?>
+                                    <a href="<?php echo $booking_url; ?>" class="btn btn-kingsman">Book Now</a>
+                                <?php else: ?>
+                                    <button class="btn btn-secondary text-uppercase" disabled style="letter-spacing: 2px;">Fully
+                                        Booked</button>
+                                <?php endif; ?>
                                 <a href="room_details.php?id=<?php echo $row['id']; ?>"
                                     class="btn btn-outline-secondary btn-sm text-uppercase"
                                     style="letter-spacing: 2px;">View Details</a>

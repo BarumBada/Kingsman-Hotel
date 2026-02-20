@@ -69,8 +69,12 @@ include dirname(__DIR__) . '/includes/header.php';
                                 <?php echo nl2br(htmlspecialchars($msg['message'])); ?>
                             </div>
                             <div class="d-flex justify-content-end">
-                                <a href="messages.php?delete=<?php echo $msg['id']; ?>" class="btn btn-outline-danger btn-sm"
-                                    onclick="return confirm('Delete this message?')">Delete</a>
+                                <a href="messages.php?delete=<?php echo $msg['id']; ?>"
+                                    class="btn btn-outline-danger btn-sm px-2 border-0"
+                                    onclick="return confirm('Classified: Purge this inquiry from records?')"
+                                    title="Purge Intel">
+                                    <i class="bi bi-trash fs-5"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
