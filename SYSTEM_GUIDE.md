@@ -59,6 +59,22 @@ graph TD
 
 ---
 
+## 🔑 Account Access
+
+Use the following default credentials for testing and management.
+
+### 💼 Admin Portal
+- **URL**: `/admin/`
+- **Email**: `admin@kingsman.com`
+- **Password**: `password123`
+
+### 👤 Guest Portal
+- **URL**: `/login.php`
+- **Email**: `james.r@gmail.com`
+- **Password**: `password123`
+
+---
+
 ## 📊 Database Highlights
 Key tables driving the system:
 - `users`: Core identity table for both guests and staff.
