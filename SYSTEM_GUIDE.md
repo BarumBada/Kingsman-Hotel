@@ -70,10 +70,25 @@ Key tables driving the system:
 
 ---
 
-## 🚀 Setup & Configuration
-- **Database**: Import `hotel_db.sql` into MySQL.
-- **Connection**: Configure `config/db.php` with appropriate credentials.
-- **Email**: Uses PHPMAILER. Configuration is handled in `includes/mail_helper.php`.
+---
+
+## 🚀 Setup & Installation
+
+### 1. Database Configuration
+1. Import `hotel_db.sql` into your MySQL server (via phpMyAdmin or CLI).
+2. Configure your credentials in `config/db.php`.
+
+### 2. Dependency Management
+Since the `vendor/` directory is excluded from the repository, run the following command to install required libraries (like PHPMailer):
+```bash
+composer install
+```
+
+### 3. Mail Configuration
+This system uses PHP's native `mail()` function. For local development on XAMPP, refer to the:
+👉 **[MAIL_SETUP_GUIDE.md](file:///c:/xampp/htdocs/kingsman/MAIL_SETUP_GUIDE.md)**
+
+---
 
 > [!IMPORTANT]
 > This system is designed for high-end privacy (Bespoke Service). Admins have manual control over confirmations to ensure premium service quality.
