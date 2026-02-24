@@ -1,21 +1,23 @@
 <?php
 include 'includes/header.php';
 require_once 'config/db.php';
+date_default_timezone_set('Asia/Manila');
 
 $message = '';
 $messageType = '';
 
-if (isset($_GET['simulated_otp'])) {
-    $message = "SYSTEM NOTIFICATION: A verification code has been generated for your session: " . htmlspecialchars($_GET['simulated_otp']);
+if (isset($_GET['sent']) && $_GET['sent'] == 1) {
+    $message = "A verification code has been sent to your email address.";
     $messageType = "info";
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'] ?? ($_SESSION['verify_email'] ?? '');
     $code = $_POST['otp_code'];
+    $now = date('Y-m-d H:i:s');
 
-    $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ? AND otp_code = ? AND otp_expiry > NOW()");
-    $stmt->execute([$email, $code]);
+    $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ? AND otp_code = ? AND otp_expiry > ?");
+    $stmt->execute([$email, $code, $now]);
     $user = $stmt->fetch();
 
     if ($user) {
@@ -61,11 +63,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <form method="POST" action="">
                     <div class="mb-4">
-                        <label class="form-label">Activation Code</label>
+                        <label class="form-label">Verification Code</label>
                         <input type="text" name="otp_code" class="form-control text-center fs-2 fw-bold" maxlength="6"
                             pattern="\d{6}" required placeholder="000000" style="letter-spacing: 10px;">
                     </div>
-                    <button type="submit" class="btn btn-kingsman w-100 py-3">Activate Account</button>
+                    <button type="submit" class="btn btn-kingsman w-100 py-3">Verify Account</button>
 
                     <?php if ($messageType == 'success'): ?>
                         <div class="text-center mt-4">

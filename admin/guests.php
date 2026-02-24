@@ -74,21 +74,21 @@ include dirname(__DIR__) . '/includes/header.php';
         <div class="d-flex justify-content-between align-items-center mb-5">
             <div>
                 <h1 class="display-5">Guest Management</h1>
-                <p class="text-muted">Direct control over Kingsman's global client registry.</p>
+                <p class="text-muted">Direct control over the hotel's guest registry.</p>
             </div>
             <button class="btn btn-kingsman px-4" data-bs-toggle="modal" data-bs-target="#addGuestModal">
-                <i class="bi bi-person-plus-fill me-2"></i> Register New Guest
+                <i class="bi bi-person-plus-fill me-2"></i> Add New Guest
             </button>
         </div>
 
         <?php if ($msg == 'added'): ?>
-            <div class="kingsman-alert success mb-4"><i class="bi bi-check-circle-fill me-2"></i> New guest identity
-                established successfully.</div>
+            <div class="kingsman-alert success mb-4"><i class="bi bi-check-circle-fill me-2"></i> New guest
+                added successfully.</div>
         <?php elseif ($msg == 'updated'): ?>
             <div class="kingsman-alert success mb-4"><i class="bi bi-check-circle-fill me-2"></i> Guest profile updated.
             </div>
         <?php elseif ($msg == 'deleted'): ?>
-            <div class="kingsman-alert success mb-4"><i class="bi bi-trash-fill me-2"></i> Guest record purged from
+            <div class="kingsman-alert success mb-4"><i class="bi bi-trash-fill me-2"></i> Guest record deleted from
                 registry.</div>
         <?php elseif ($msg == 'status_updated'): ?>
             <div class="kingsman-alert success mb-4"><i class="bi bi-shield-lock-fill me-2"></i> Guest access status
@@ -103,66 +103,73 @@ include dirname(__DIR__) . '/includes/header.php';
                 <table class="table table-dark table-hover mb-0" id="guestsTable">
                     <thead>
                         <tr class="text-muted small text-uppercase">
-                            <th class="ps-4">Guest Identity</th>
+                            <th class="ps-4">Guest Name</th>
                             <th>Contact Details</th>
                             <th>Status</th>
-                            <th class="pe-4 text-end">Action / Protocol</th>
+                            <th class="pe-4 text-end">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($guests as $guest): ?>
-                            <tr>
+                        <?php
+                        $i = 1;
+                        foreach ($guests as $guest):
+                            $reveal_class = "reveal reveal-" . min($i, 5);
+                            $i++;
+                            ?>
+                            <tr class="<?php echo $reveal_class; ?>">
                                 <td class="ps-4">
                                     <div class="d-flex align-items-center">
                                         <img src="<?php echo '../assets/img/' . ($guest['profile_image'] ? 'avatars/' . $guest['profile_image'] : 'galahad.jpg'); ?>"
-                                            class="rounded-circle border border-gold me-3"
-                                            style="width: 45px; height: 45px; object-fit: cover;">
+                                            class="rounded-circle border border-gold p-1 me-3 shadow-sm"
+                                            style="width: 48px; height: 48px; object-fit: cover;">
                                         <div>
-                                            <div class="fw-bold gold-text">
+                                            <div class="fw-bold gold-text" style="letter-spacing: 0.5px;">
                                                 <?php echo htmlspecialchars($guest['firstname'] . ' ' . $guest['lastname']); ?>
                                             </div>
-                                            <div class="small text-muted" style="font-size: 0.65rem;">UID:
-                                                #<?php echo str_pad($guest['id'], 5, '0', STR_PAD_LEFT); ?></div>
+                                            <div class="text-muted" style="font-size: 0.65rem; font-weight: 500;">
+                                                UID: <span
+                                                    class="text-white-50">#<?php echo str_pad($guest['id'], 5, '0', STR_PAD_LEFT); ?></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="small"><i
-                                            class="bi bi-envelope-at me-2 gold-text"></i><?php echo htmlspecialchars($guest['email']); ?>
+                                    <div class="small mb-1"><i
+                                            class="bi bi-envelope-at me-2 opacity-50"></i><?php echo htmlspecialchars($guest['email']); ?>
                                     </div>
-                                    <div class="small"><i
-                                            class="bi bi-phone me-2 gold-text"></i><?php echo htmlspecialchars($guest['phone']); ?>
+                                    <div class="small text-muted"><i
+                                            class="bi bi-phone me-2 opacity-50"></i><?php echo htmlspecialchars($guest['phone']); ?>
                                     </div>
                                 </td>
                                 <td>
                                     <span
-                                        class="badge rounded-pill bg-<?php echo $guest['account_status'] == 'active' ? 'success' : 'danger'; ?> opacity-75">
+                                        class="badge bg-<?php echo $guest['account_status'] == 'active' ? 'success' : 'danger'; ?> bg-opacity-10 text-<?php echo $guest['account_status'] == 'active' ? 'success' : 'danger'; ?> border border-<?php echo $guest['account_status'] == 'active' ? 'success' : 'danger'; ?> border-opacity-25 px-3 py-2 small">
                                         <?php echo strtoupper($guest['account_status']); ?>
                                     </span>
                                 </td>
                                 <td class="pe-4 text-end">
                                     <div class="btn-group shadow-sm">
-                                        <button class="btn btn-outline-gold text-white btn-sm px-2 border-0"
+                                        <button class="btn btn-outline-gold btn-sm px-2 border-0"
                                             onclick="editGuest(<?php echo htmlspecialchars(json_encode($guest)); ?>)"
-                                            title="Edit Protocol">
+                                            title="Edit Guest">
                                             <i class="bi bi-pencil-square fs-6"></i>
                                         </button>
 
                                         <?php if ($guest['account_status'] == 'active'): ?>
                                             <a href="guests.php?toggle_status=blocked&id=<?php echo $guest['id']; ?>"
-                                                class="btn btn-outline-warning btn-sm px-2 border-0" title="Revoke Access"
+                                                class="btn btn-outline-warning btn-sm px-2 border-0" title="Block Guest"
                                                 onclick="return confirm('Suspend this guest\'s credentials?')">
                                                 <i class="bi bi-slash-circle fs-6"></i>
                                             </a>
                                         <?php else: ?>
                                             <a href="guests.php?toggle_status=active&id=<?php echo $guest['id']; ?>"
-                                                class="btn btn-outline-success btn-sm px-2 border-0" title="Restore Access">
+                                                class="btn btn-outline-success btn-sm px-2 border-0" title="Activate Guest">
                                                 <i class="bi bi-check-circle fs-6"></i>
                                             </a>
                                         <?php endif; ?>
 
                                         <button class="btn btn-outline-danger btn-sm px-2 border-0"
-                                            onclick="confirmDelete(<?php echo $guest['id']; ?>)" title="Purge Identity">
+                                            onclick="confirmDelete(<?php echo $guest['id']; ?>)" title="Delete Guest">
                                             <i class="bi bi-trash fs-6"></i>
                                         </button>
                                     </div>
@@ -179,45 +186,61 @@ include dirname(__DIR__) . '/includes/header.php';
 <!-- Add Guest Modal -->
 <div class="modal fade" id="addGuestModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-dark border-gold text-white">
-            <div class="modal-header border-secondary">
-                <h5 class="modal-title gold-text">Identify New Guest</h5>
+        <div class="modal-content kingsman-card glass-panel border-gold shadow-lg">
+            <div class="modal-header border-gold">
+                <h5 class="modal-title gold-text small text-uppercase" style="letter-spacing: 2px;">
+                    <i class="bi bi-person-plus-fill me-2"></i> Add New Guest
+                </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <form method="POST">
-                <div class="modal-body p-4">
-                    <div class="row g-3">
+                <div class="modal-body py-4 px-5">
+                    <div class="row g-4">
                         <div class="col-md-6">
-                            <label class="form-label small gold-text">First Name</label>
+                            <label class="form-label small text-muted text-uppercase fw-bold">First Name</label>
                             <input type="text" name="firstname" class="form-control bg-dark text-white border-secondary"
-                                required>
+                                placeholder="Lancelot" required>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small gold-text">Last Name</label>
+                            <label class="form-label small text-muted text-uppercase fw-bold">Last Name</label>
                             <input type="text" name="lastname" class="form-control bg-dark text-white border-secondary"
-                                required>
+                                placeholder="Galahad" required>
                         </div>
                         <div class="col-12">
-                            <label class="form-label small gold-text">Email Address</label>
-                            <input type="email" name="email" class="form-control bg-dark text-white border-secondary"
-                                required>
+                            <label class="form-label small text-muted text-uppercase fw-bold">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-dark border-secondary text-muted"><i
+                                        class="bi bi-envelope"></i></span>
+                                <input type="email" name="email"
+                                    class="form-control bg-dark text-white border-secondary"
+                                    placeholder="agent@kingsman.com" required>
+                            </div>
                         </div>
                         <div class="col-12">
-                            <label class="form-label small gold-text">Phone Number</label>
-                            <input type="text" name="phone" class="form-control bg-dark text-white border-secondary"
-                                required>
+                            <label class="form-label small text-muted text-uppercase fw-bold">Phone Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-dark border-secondary text-muted"><i
+                                        class="bi bi-phone"></i></span>
+                                <input type="text" name="phone" class="form-control bg-dark text-white border-secondary"
+                                    placeholder="+44 20 7946 0958" required>
+                            </div>
                         </div>
                         <div class="col-12">
-                            <label class="form-label small gold-text">Temporary Password</label>
-                            <input type="password" name="password"
-                                class="form-control bg-dark text-white border-secondary"
-                                placeholder="Default: password123">
+                            <label class="form-label small text-muted text-uppercase fw-bold">Temporary Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-dark border-secondary text-muted"><i
+                                        class="bi bi-key"></i></span>
+                                <input type="password" name="password"
+                                    class="form-control bg-dark text-white border-secondary"
+                                    placeholder="Default: password123">
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Abstain</button>
-                    <button type="submit" name="add_guest" class="btn btn-kingsman px-4">Initialize Record</button>
+                <div class="modal-footer border-gold">
+                    <button type="button" class="btn btn-secondary btn-sm px-4" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" name="add_guest" class="btn btn-kingsman btn-sm px-4">Add
+                        Guest</button>
                 </div>
             </form>
         </div>
@@ -227,40 +250,42 @@ include dirname(__DIR__) . '/includes/header.php';
 <!-- Edit Guest Modal -->
 <div class="modal fade" id="editGuestModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-dark border-gold text-white">
-            <div class="modal-header border-secondary">
-                <h5 class="modal-title gold-text">Revise Guest Protocol</h5>
+        <div class="modal-content kingsman-card glass-panel border-gold shadow-lg">
+            <div class="modal-header border-gold">
+                <h5 class="modal-title gold-text small text-uppercase" style="letter-spacing: 2px;">
+                    <i class="bi bi-pencil-square me-2"></i> Edit Guest Profile
+                </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <form method="POST">
                 <input type="hidden" name="user_id" id="editUserId">
-                <div class="modal-body p-4">
-                    <div class="row g-3">
+                <div class="modal-body py-4 px-5">
+                    <div class="row g-4">
                         <div class="col-md-6">
-                            <label class="form-label small gold-text">First Name</label>
+                            <label class="form-label small text-muted text-uppercase fw-bold">First Name</label>
                             <input type="text" name="firstname" id="editFirstname"
                                 class="form-control bg-dark text-white border-secondary" required>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small gold-text">Last Name</label>
+                            <label class="form-label small text-muted text-uppercase fw-bold">Last Name</label>
                             <input type="text" name="lastname" id="editLastname"
                                 class="form-control bg-dark text-white border-secondary" required>
                         </div>
                         <div class="col-12">
-                            <label class="form-label small gold-text">Email Address</label>
+                            <label class="form-label small text-muted text-uppercase fw-bold">Email Address</label>
                             <input type="email" name="email" id="editEmail"
                                 class="form-control bg-dark text-white border-secondary" required>
                         </div>
                         <div class="col-12">
-                            <label class="form-label small gold-text">Phone Number</label>
+                            <label class="form-label small text-muted text-uppercase fw-bold">Phone Number</label>
                             <input type="text" name="phone" id="editPhone"
                                 class="form-control bg-dark text-white border-secondary" required>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" name="edit_guest" class="btn btn-kingsman px-4">Update Profile</button>
+                <div class="modal-footer border-gold">
+                    <button type="button" class="btn btn-secondary btn-sm px-4" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" name="edit_guest" class="btn btn-kingsman btn-sm px-4">Update Profile</button>
                 </div>
             </form>
         </div>
@@ -280,7 +305,7 @@ include dirname(__DIR__) . '/includes/header.php';
 
     function confirmDelete(id) {
         Swal.fire({
-            title: 'Purge Identity?',
+            title: 'Delete Guest?',
             text: "This will permanently remove the guest record and history.",
             icon: 'warning',
             showCancelButton: true,
@@ -288,8 +313,8 @@ include dirname(__DIR__) . '/includes/header.php';
             color: '#fff',
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
-            confirmButtonText: 'CONFIRM PURGE',
-            cancelButtonText: 'ABORT'
+            confirmButtonText: 'CONFIRM DELETE',
+            cancelButtonText: 'CANCEL'
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = 'guests.php?delete_id=' + id;

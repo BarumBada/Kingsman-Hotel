@@ -13,7 +13,7 @@ if (!$room_id) {
     header("Location: index.php");
     exit();
 }
- 
+
 $stmt = $pdo->prepare("SELECT * FROM room_types WHERE id = ?");
 $stmt->execute([$room_id]);
 $room = $stmt->fetch();
@@ -31,14 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_booking'])) {
     $check_out = $_POST['check_out'];
     $user_id = $_SESSION['user_id'];
     $ref = 'KGM-' . strtoupper(substr(uniqid(), -6));
- 
+
     $days = (strtotime($check_out) - strtotime($check_in)) / (60 * 60 * 24);
     if ($days <= 0)
         $days = 1;
     $total_price = $room['price_per_night'] * $days;
     try {
         $pdo->beginTransaction();
- 
+
         $room_stmt = $pdo->prepare("SELECT r.id FROM rooms r
     WHERE r.room_type_id = ?
     AND r.id NOT IN (
@@ -55,36 +55,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_booking'])) {
 
         $assigned_room_id = $available_room['id'];
 
-        
+
         $stmt = $pdo->prepare("INSERT INTO bookings (user_id, room_id, booking_reference, check_in_date, check_out_date,
-        total_price, status) VALUES (?, ?, ?, ?, ?, ?, 'confirmed')");
+        total_price, status) VALUES (?, ?, ?, ?, ?, ?, 'pending')");
         $stmt->execute([$user_id, $assigned_room_id, $ref, $check_in, $check_out, $total_price]);
         $booking_id = $pdo->lastInsertId();
 
-       
+
         $stmt = $pdo->prepare("INSERT INTO payments (booking_id, amount, payment_method) VALUES (?, ?, 'Secured
         Channel')");
         $stmt->execute([$booking_id, $total_price]);
 
-        
-        $stmt = $pdo->prepare("INSERT INTO notifications (user_id, title, message) VALUES (?, 'Booking Confirmation',
+
+        $stmt = $pdo->prepare("INSERT INTO notifications (user_id, title, message) VALUES (?, 'Booking Submitted',
         ?)");
-        $notif_msg = "Your stay in the " . $room['type_name'] . " has been confirmed. Reference: " . $ref;
+        $notif_msg = "Your reservation for the " . $room['type_name'] . " has been submitted and is pending approval. Reference: " . $ref;
         $stmt->execute([$user_id, $notif_msg]);
 
-        
-        $email_body = "<h3>Reservation Confirmed</h3>
+
+        $email_body = "<h3>Reservation Submitted</h3>
         <p>Dear Guest,</p>
-        <p>Your stay in the <strong>" . $room['type_name'] . "</strong> has been confirmed.</p>
+        <p>Your reservation for the <strong>" . $room['type_name'] . "</strong> has been submitted and is <strong>pending approval</strong>.</p>
         <p><strong>Reference:</strong> " . $ref . "</p>
         <p><strong>Check-in:</strong> " . $check_in . "</p>
         <p><strong>Check-out:</strong> " . $check_out . "</p>
-        <p>We look forward to welcoming you.</p>";
-        $branded_html = get_branded_template("Reservation Confirmed", $email_body);
-        send_kingsman_mail($_SESSION['full_name'], "Reservation Confirmed - " . $ref, $branded_html);
+        <p>You will be notified once our team confirms your reservation.</p>";
+        $branded_html = get_branded_template("Reservation Submitted", $email_body);
+        send_kingsman_mail($_SESSION['user_email'], "Reservation Submitted - " . $ref, $branded_html);
 
         $pdo->commit();
-        $message = "Reservation Confirmed. Your reference is: " . $ref;
+        $message = "Reservation Submitted! Your reference is: " . $ref . ". Please wait for admin confirmation.";
         $messageType = "success";
     } catch (Exception $e) {
         if ($pdo->inTransaction())

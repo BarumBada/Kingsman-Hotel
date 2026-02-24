@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['role'] = $user['role'];
             $_SESSION['full_name'] = $user['firstname'] . ' ' . $user['lastname'];
+            $_SESSION['user_email'] = $user['email'];
 
             header("Location: dashboard.php");
             exit();
@@ -47,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="card kingsman-card p-4">
                 <div class="text-center mb-4">
                     <h2 class="gold-text">Welcome Back</h2>
-                    <p class="">Login to your Kingsman account.</p>
+                    <p class="">Login to your account.</p>
                 </div>
 
                 <?php if ($message): ?>

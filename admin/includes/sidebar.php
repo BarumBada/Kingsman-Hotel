@@ -22,8 +22,8 @@ if ($current_dir == 'kingsman') {
     </div>
     <ul class="nav flex-column">
         <li class="nav-item mb-2">
-            <a href="<?php echo $root_path; ?>dashboard.php"
-                class="nav-link <?php echo ($current_page == 'dashboard.php' || $current_page == 'index.php') ? 'gold-text active fw-bold' : 'text-white'; ?>">
+            <a href="dashboard.php"
+                class="nav-link <?php echo ($current_page == 'dashboard.php') ? 'gold-text active fw-bold' : 'text-white'; ?>">
                 <i class="bi bi-speedometer2 me-2"></i> Dashboard
             </a>
         </li>
@@ -65,8 +65,8 @@ if ($current_dir == 'kingsman') {
             </li>
             <li class="nav-item mb-2">
                 <a href="<?php echo $root_path; ?>admin/admins.php"
-                    class="nav-link <?php echo ($current_page == 'admins.php') ? 'gold-text active fw-bold' : 'text-white'; ?>">
-                    <i class="bi bi-shield-lock me-2"></i> Admin Agents
+                    class="nav-link <?php echo ($current_page == 'admins.php') ? 'active gold-text' : 'text-white-50'; ?> d-flex align-items-center py-3 px-4">
+                    <i class="bi bi-shield-lock me-2"></i> Staff Management
                 </a>
             </li>
 
@@ -77,19 +77,19 @@ if ($current_dir == 'kingsman') {
             <li class="nav-item mb-2">
                 <a href="<?php echo $root_path; ?>admin/rooms.php"
                     class="nav-link <?php echo ($current_page == 'rooms.php') ? 'gold-text active fw-bold' : 'text-white'; ?>">
-                    <i class="bi bi-door-open me-2"></i> Suite Categories
+                    <i class="bi bi-door-open me-2"></i> Room Categories
                 </a>
             </li>
             <li class="nav-item mb-2">
                 <a href="<?php echo $root_path; ?>admin/inventory.php"
                     class="nav-link <?php echo ($current_page == 'inventory.php') ? 'gold-text active fw-bold' : 'text-white'; ?>">
-                    <i class="bi bi-grid-3x3-gap me-2"></i> Operational Inventory
+                    <i class="bi bi-grid-3x3-gap me-2"></i> Inventory Management
                 </a>
             </li>
 
             <li class="nav-item mt-3 mb-1">
-                <span class="text-muted small text-uppercase ps-3"
-                    style="font-size: 0.6rem; letter-spacing: 1.5px;">Intelligence</span>
+                <span class="text-uppercase text-muted fw-bold px-4 pt-4 pb-2 d-block"
+                    style="font-size: 0.6rem; letter-spacing: 1.5px;">Performance</span>
             </li>
             <li class="nav-item mb-2">
                 <a href="<?php echo $root_path; ?>admin/messages.php"
@@ -100,7 +100,7 @@ if ($current_dir == 'kingsman') {
             <li class="nav-item mb-2">
                 <a href="<?php echo $root_path; ?>admin/reports.php"
                     class="nav-link <?php echo ($current_page == 'reports.php') ? 'gold-text active fw-bold' : 'text-white'; ?>">
-                    <i class="bi bi-bar-chart me-2"></i> Strategic Reports
+                    <i class="bi bi-bar-chart me-2"></i> Reports
                 </a>
             </li>
 

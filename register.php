@@ -2,6 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+date_default_timezone_set('Asia/Manila');
 if (isset($_SESSION['user_id'])) {
     header("Location: dashboard.php");
     exit();
@@ -32,16 +33,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['verify_email'] = $email;
 
         $email_body = "<h3>Verify Your Account</h3>
-                      <p>Thank you for choosing Kingsman Hotel.</p>
-                      <p>To finalize your account registration, please use the following verification code:</p>
+                       <p>Thank you for choosing our hotel.</p>
+                       <p>To finalize your account registration, please use the following verification code:</p>
                       <div style='background: #111; padding: 20px; font-size: 24px; color: #c5a021; text-align: center; border: 1px solid #c5a021;'>
                         " . $otp . "
                       </div>
                       <p>This code will expire in 10 minutes.</p>";
         $branded_html = get_branded_template("Account Verification", $email_body);
-        send_kingsman_mail($firstname . ' ' . $lastname, "Your Verification Code", $branded_html);
+        send_kingsman_mail($email, "Your Verification Code", $branded_html);
 
-        header("Location: verify.php?simulated_otp=" . $otp);
+        header("Location: verify.php?sent=1");
         exit();
     } catch (PDOException $e) {
         if ($e->getCode() == 23000) {
@@ -60,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="card kingsman-card p-4">
                 <div class="text-center mb-4">
                     <h2 class="gold-text">Create Guest Account</h2>
-                    <p class="">Register for a bespoke hospitality experience.</p>
+                    <p class="">Register for a premium guest experience.</p>
                 </div>
 
                 <?php if ($message): ?>

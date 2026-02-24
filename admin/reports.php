@@ -121,13 +121,13 @@ include dirname(__DIR__) . '/includes/header.php';
         </style>
         <div class="print-header d-none d-print-block">
             <h1 style="letter-spacing: 4px; font-weight: 900;">KINGSMAN HOTEL</h1>
-            <p>Operational Performance Summary</p>
+            <p>Performance Summary</p>
             <div class="text-end small">Generated: <?php echo date('Y-m-d H:i'); ?> | System Generated</div>
         </div>
 
         <div class="mb-5 report-title">
-            <h1 class="display-5">Operational Performance Report</h1>
-            <p class="text-muted">Analyzing property metrics for optimal service delivery.</p>
+            <h1 class="display-5">Performance Report</h1>
+            <p class="text-muted">Analyzing property metrics for business growth and optimization.</p>
         </div>
 
         <div class="row g-4 mb-5">
@@ -211,7 +211,8 @@ include dirname(__DIR__) . '/includes/header.php';
                                         <tr>
                                             <td class="small"><?php echo htmlspecialchars($rc['booking_reference']); ?></td>
                                             <td class="small">
-                                                <?php echo htmlspecialchars($rc['lastname'] . ', ' . $rc['firstname']); ?></td>
+                                                <?php echo htmlspecialchars($rc['lastname'] . ', ' . $rc['firstname']); ?>
+                                            </td>
                                             <td class="text-end small">₱<?php echo number_format($rc['total_price'], 2); ?></td>
                                         </tr>
                                     <?php endforeach; ?>
@@ -226,7 +227,7 @@ include dirname(__DIR__) . '/includes/header.php';
         <div class="card kingsman-card p-5 text-center no-print border-0">
             <i class="bi bi-printer gold-text mb-4" style="font-size: 3rem;"></i>
             <h3>Print Report</h3>
-            <p class="text-muted mb-4">Generate a high-fidelity physical report for management review.
+            <p class="text-muted mb-4">Generate a high-fidelity report for management review.
             </p>
             <button class="btn btn-kingsman px-5 py-3" onclick="window.print()">Print Report</button>
         </div>

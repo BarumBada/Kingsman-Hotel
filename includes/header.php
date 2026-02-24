@@ -48,7 +48,7 @@ $base_path = ($current_dir == 'admin' || $current_dir == 'user') ? '../' : '';
                     <?php else: ?>
                         <li class="nav-item"><a class="nav-link" href="<?php echo $base_path; ?>login.php">Login</a></li>
                         <li class="nav-item ms-lg-3"><a class="btn btn-kingsman"
-                                href="<?php echo $base_path; ?>register.php">Book Now</a></li>
+                                href="<?php echo $base_path; ?>register.php">Register</a></li>
                     <?php endif; ?>
                 </ul>
             </div>

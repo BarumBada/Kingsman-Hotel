@@ -87,8 +87,37 @@ CREATE TABLE site_settings (
 );
 
 INSERT INTO site_settings (setting_key, setting_value) VALUES 
-('hero_title', 'Manners Maketh Man'), 
-('hero_subtitle', 'Luxurious Rooms. Discrete Service. The Kingsman Standard.'), 
-('about_title', 'Why Kingsman?'), 
-('about_text', 'The Kingsman Hotel is not just a place to sleep; it’s a statement. Since 1849, we have provided the finest tailoring for the world’s most elite, and now we provide the finest hospitality.'),
-('about_img', 'assets/img/about.jpg');
+('hero_title', 'The Art of Hospitality'), 
+('hero_subtitle', 'Experience the pinnacle of discrete luxury and personalized service at the Kingsman Hotel.'), 
+('about_title', 'Our Legacy of Excellence'), 
+('about_text', 'For over a century, the Kingsman has been the destination of choice for detail-oriented travelers. We combine classic elegance with modern operational efficiency.'),
+('about_img', '/assets/img/arthur.jpg');
+
+-- Seed User Identities (Password: password123)
+-- Admin: Robert Binarao (admin@kingsman.com)
+INSERT INTO users (firstname, lastname, email, password, phone, role, account_status, is_verified) VALUES 
+('Robert', 'Binarao', 'admin@kingsman.com', '$2y$10$QpG1fWREmGgU4Z2iYpP9O.F6uX8yqN9Y8wK5N2U7E1G6E2O3R4Y5S', '09123456789', 'admin', 'active', 1);
+
+-- Seed Standard Guests
+INSERT INTO users (firstname, lastname, email, password, phone, role, account_status, is_verified) VALUES 
+('James', 'Robinson', 'james.r@gmail.com', '$2y$10$QpG1fWREmGgU4Z2iYpP9O.F6uX8yqN9Y8wK5N2U7E1G6E2O3R4Y5S', '09123456701', 'user', 'active', 1),
+('Sarah', 'Jenkins', 'sarah.j@hotmail.com', '$2y$10$QpG1fWREmGgU4Z2iYpP9O.F6uX8yqN9Y8wK5N2U7E1G6E2O3R4Y5S', '09123456702', 'user', 'active', 1),
+('Michael', 'Chen', 'm.chen@outlook.com', '$2y$10$QpG1fWREmGgU4Z2iYpP9O.F6uX8yqN9Y8wK5N2U7E1G6E2O3R4Y5S', '09123456703', 'user', 'active', 1);
+
+-- Seed Room Categories
+INSERT INTO room_types (type_name, description, price_per_night, max_capacity, thumbnail_image) VALUES 
+('The Windsor Suite', 'Pure elegance. Perfect for the modern connoisseur of fine living.', 15500.00, 2, 'arthur.jpg'),
+('The Mayfair Quarters', 'Sharp, sophisticated, and incredibly comfortable for business elites.', 12000.00, 2, 'galahad.jpg'),
+('The Savoy Penthouse', 'High-tech amenities and panoramic city views from the highest point.', 45000.00, 4, 'hero.jpg'),
+('The Chelsea Deluxe', 'Experience refined luxury with a private balcony overlooking our botanical gardens.', 8500.00, 2, 'merlin.jpg'),
+('The Westminster Executive', 'Designed for the modern professional with panoramic city views and a high-end workstation.', 12500.00, 2, 'hero.jpg'),
+('The Kensington Family Suite', 'Spacious and inclusive. Two connected rooms with a shared lounge area.', 18000.00, 5, 'galahad.jpg');
+
+-- Seed Physical Rooms
+INSERT INTO rooms (room_number, room_type_id, status) VALUES 
+('101', 1, 'available'), ('102', 1, 'available'), ('103', 1, 'maintenance'),
+('201', 2, 'available'), ('202', 2, 'occupied'), ('203', 2, 'available'),
+('301', 3, 'available'), ('302', 3, 'available'),
+('401', 4, 'available'), ('402', 4, 'occupied'),
+('501', 5, 'available'), ('502', 5, 'available'),
+('601', 6, 'available'), ('602', 6, 'available');

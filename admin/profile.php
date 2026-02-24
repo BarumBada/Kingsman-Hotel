@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['change_password'])) {
             $hashed = password_hash($new_pass, PASSWORD_DEFAULT);
             $stmt = $pdo->prepare("UPDATE users SET password = ? WHERE id = ?");
             $stmt->execute([$hashed, $user_id]);
-            $message = "Security protocols updated. New password established.";
+            $message = "Security settings updated. New password established.";
             $messageType = "success";
         } else {
             $message = "Password mismatch. Aborting update.";
@@ -95,7 +95,7 @@ include dirname(__DIR__) . '/includes/header.php';
 
     <div class="flex-grow-1 p-5">
         <div class="mb-5">
-            <h1 class="display-5 gold-text text-uppercase" style="letter-spacing: 2px;">Agent Profile</h1>
+            <h1 class="display-5 gold-text text-uppercase" style="letter-spacing: 2px;">Profile Management</h1>
             <p class="text-muted">Manage your administrative identity and security clearance.</p>
         </div>
 
@@ -162,7 +162,7 @@ include dirname(__DIR__) . '/includes/header.php';
                         </div>
                         <button type="submit" name="update_profile"
                             class="btn btn-kingsman w-100 py-3 mt-3 fw-bold text-uppercase">Update Personal
-                            Protocol</button>
+                            Update Settings</button>
                     </form>
                 </div>
             </div>
@@ -209,7 +209,7 @@ include dirname(__DIR__) . '/includes/header.php';
 
                         <button type="submit" name="change_password"
                             class="btn btn-outline-danger w-100 py-3 fw-bold text-uppercase"
-                            style="letter-spacing: 2px;">Re-establish Security Protocols</button>
+                            style="letter-spacing: 2px;">Update Security Settings</button>
                     </form>
                 </div>
             </div>

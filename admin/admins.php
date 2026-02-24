@@ -83,31 +83,31 @@ include dirname(__DIR__) . '/includes/header.php';
         <div class="d-flex justify-content-between align-items-center mb-5">
             <div>
                 <h1 class="display-5">Administrator Management</h1>
-                <p class="text-muted">High-level access control for Kingsman operational staff.</p>
+                <p class="text-muted">Direct control over the hotel's administrative staff.</p>
             </div>
             <button class="btn btn-kingsman px-4" data-bs-toggle="modal" data-bs-target="#addAdminModal">
-                <i class="bi bi-shield-plus me-2"></i> Appoint New Admin
+                <i class="bi bi-shield-plus me-2"></i> Add New Administrator
             </button>
         </div>
 
         <?php if ($msg == 'added'): ?>
             <div class="kingsman-alert success mb-4"><i class="bi bi-check-circle-fill me-2"></i> New administrator
-                appointed successfully.</div>
+                added successfully.</div>
         <?php elseif ($msg == 'updated'): ?>
             <div class="kingsman-alert success mb-4"><i class="bi bi-check-circle-fill me-2"></i> Administrator profile
                 updated.</div>
         <?php elseif ($msg == 'deleted'): ?>
-            <div class="kingsman-alert success mb-4"><i class="bi bi-trash-fill me-2"></i> Admin credentials revoked and
-                record purged.</div>
+            <div class="kingsman-alert success mb-4"><i class="bi bi-trash-fill me-2"></i> Admin credentials removed and
+                record deleted.</div>
         <?php elseif ($msg == 'status_updated'): ?>
-            <div class="kingsman-alert success mb-4"><i class="bi bi-shield-lock-fill me-2"></i> Admin operational status
-                modified.</div>
+            <div class="kingsman-alert success mb-4"><i class="bi bi-shield-lock-fill me-2"></i> Admin status
+                updated.</div>
         <?php elseif ($msg == 'self_block_error'): ?>
-            <div class="kingsman-alert error mb-4"><i class="bi bi-exclamation-octagon me-2"></i> Security Protocol: You
-                cannot suspend your own active session account.</div>
+            <div class="kingsman-alert error mb-4"><i class="bi bi-exclamation-octagon me-2"></i> Security Notice: You
+                cannot suspend your own account.</div>
         <?php elseif ($msg == 'self_delete_error'): ?>
-            <div class="kingsman-alert error mb-4"><i class="bi bi-exclamation-octagon me-2"></i> Security Protocol: You
-                cannot delete your own active session account.</div>
+            <div class="kingsman-alert error mb-4"><i class="bi bi-exclamation-octagon me-2"></i> Security Notice: You
+                cannot delete your own account.</div>
         <?php elseif ($error): ?>
             <div class="kingsman-alert error mb-4"><i class="bi bi-exclamation-triangle-fill me-2"></i>
                 <?php echo $error; ?>
@@ -119,41 +119,47 @@ include dirname(__DIR__) . '/includes/header.php';
                 <table class="table table-dark table-hover mb-0" id="adminsTable">
                     <thead>
                         <tr class="text-muted small text-uppercase">
-                            <th class="ps-4">Admin Agent</th>
+                            <th class="ps-4">Administrator</th>
                             <th>Contact Details</th>
                             <th>Status</th>
-                            <th class="pe-4 text-end">Action / Protocol</th>
+                            <th class="pe-4 text-end">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($admins as $admin): ?>
-                            <tr>
+                        <?php
+                        $i = 1;
+                        foreach ($admins as $admin):
+                            $reveal_class = "reveal reveal-" . min($i, 5);
+                            $i++;
+                            ?>
+                            <tr class="<?php echo $reveal_class; ?>">
                                 <td class="ps-4">
                                     <div class="d-flex align-items-center">
                                         <img src="<?php echo '../assets/img/' . ($admin['profile_image'] ? 'avatars/' . $admin['profile_image'] : 'arthur.jpg'); ?>"
-                                            class="rounded-circle border border-gold me-3"
-                                            style="width: 45px; height: 45px; object-fit: cover;">
+                                            class="rounded-circle border border-gold p-1 me-3 shadow-sm"
+                                            style="width: 48px; height: 48px; object-fit: cover;">
                                         <div>
-                                            <div class="fw-bold gold-text">
+                                            <div class="fw-bold gold-text" style="letter-spacing: 0.5px;">
                                                 <?php echo htmlspecialchars($admin['firstname'] . ' ' . $admin['lastname']); ?>
                                             </div>
-                                            <div class="small text-muted" style="font-size: 0.65rem;">AGENT ID: #
-                                                <?php echo str_pad($admin['id'], 5, '0', STR_PAD_LEFT); ?>
+                                            <div class="text-muted" style="font-size: 0.65rem; font-weight: 500;">
+                                                ADMIN ID: <span
+                                                    class="text-white-50">#<?php echo str_pad($admin['id'], 5, '0', STR_PAD_LEFT); ?></span>
                                             </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="small"><i class="bi bi-envelope-at me-2 gold-text"></i>
-                                        <?php echo htmlspecialchars($admin['email']); ?>
+                                    <div class="small mb-1"><i
+                                            class="bi bi-envelope-at me-2 opacity-50"></i><?php echo htmlspecialchars($admin['email']); ?>
                                     </div>
-                                    <div class="small"><i class="bi bi-phone me-2 gold-text"></i>
-                                        <?php echo htmlspecialchars($admin['phone']); ?>
+                                    <div class="small text-muted"><i
+                                            class="bi bi-phone me-2 opacity-50"></i><?php echo htmlspecialchars($admin['phone']); ?>
                                     </div>
                                 </td>
                                 <td>
                                     <span
-                                        class="badge rounded-pill bg-<?php echo $admin['account_status'] == 'active' ? 'success' : 'danger'; ?> opacity-75">
+                                        class="badge bg-<?php echo $admin['account_status'] == 'active' ? 'success' : 'danger'; ?> bg-opacity-10 text-<?php echo $admin['account_status'] == 'active' ? 'success' : 'danger'; ?> border border-<?php echo $admin['account_status'] == 'active' ? 'success' : 'danger'; ?> border-opacity-25 px-3 py-2 small">
                                         <?php echo strtoupper($admin['account_status']); ?>
                                     </span>
                                 </td>
@@ -161,15 +167,15 @@ include dirname(__DIR__) . '/includes/header.php';
                                     <div class="btn-group shadow-sm">
                                         <button class="btn btn-outline-gold btn-sm px-2 border-0"
                                             onclick="editAdmin(<?php echo htmlspecialchars(json_encode($admin)); ?>)"
-                                            title="Edit Protocol">
+                                            title="Edit Administrator">
                                             <i class="bi bi-pencil-square fs-6"></i>
                                         </button>
 
                                         <?php if ($admin['id'] != $current_admin_id): ?>
                                             <?php if ($admin['account_status'] == 'active'): ?>
                                                 <a href="admins.php?toggle_status=blocked&id=<?php echo $admin['id']; ?>"
-                                                    class="btn btn-outline-warning btn-sm px-2 border-0" title="Suspend Credentials"
-                                                    onclick="return confirm('Suspend this admin\'s credentials?')">
+                                                    class="btn btn-outline-warning btn-sm px-2 border-0" title="Deactivate"
+                                                    onclick="return confirm('Deactivate this administrator?')">
                                                     <i class="bi bi-slash-circle fs-6"></i>
                                                 </a>
                                             <?php else: ?>
@@ -181,7 +187,7 @@ include dirname(__DIR__) . '/includes/header.php';
                                             <?php endif; ?>
 
                                             <button class="btn btn-outline-danger btn-sm px-2 border-0"
-                                                onclick="confirmDelete(<?php echo $admin['id']; ?>)" title="Purge Agent Record">
+                                                onclick="confirmDelete(<?php echo $admin['id']; ?>)" title="Delete">
                                                 <i class="bi bi-trash fs-6"></i>
                                             </button>
                                         <?php else: ?>
@@ -204,45 +210,61 @@ include dirname(__DIR__) . '/includes/header.php';
 <!-- Add Admin Modal -->
 <div class="modal fade" id="addAdminModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-dark border-gold text-white">
-            <div class="modal-header border-secondary">
-                <h5 class="modal-title gold-text">Appoint Administrator</h5>
+        <div class="modal-content kingsman-card glass-panel border-gold shadow-lg">
+            <div class="modal-header border-gold">
+                <h5 class="modal-title gold-text small text-uppercase" style="letter-spacing: 2px;">
+                    <i class="bi bi-shield-plus me-2"></i> Add New Administrator
+                </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <form method="POST">
-                <div class="modal-body p-4">
-                    <div class="row g-3">
+                <div class="modal-body py-4 px-5">
+                    <div class="row g-4">
                         <div class="col-md-6">
-                            <label class="form-label small gold-text">First Name</label>
+                            <label class="form-label small text-muted text-uppercase fw-bold">First Name</label>
                             <input type="text" name="firstname" class="form-control bg-dark text-white border-secondary"
-                                required>
+                                placeholder="Arthur" required>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small gold-text">Last Name</label>
+                            <label class="form-label small text-muted text-uppercase fw-bold">Last Name</label>
                             <input type="text" name="lastname" class="form-control bg-dark text-white border-secondary"
-                                required>
+                                placeholder="Kingsman" required>
                         </div>
                         <div class="col-12">
-                            <label class="form-label small gold-text">Official Email</label>
-                            <input type="email" name="email" class="form-control bg-dark text-white border-secondary"
-                                required>
+                            <label class="form-label small text-muted text-uppercase fw-bold">Official Email</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-dark border-secondary text-muted"><i
+                                        class="bi bi-envelope-shield"></i></span>
+                                <input type="email" name="email"
+                                    class="form-control bg-dark text-white border-secondary"
+                                    placeholder="arthur@kingsman.com" required>
+                            </div>
                         </div>
                         <div class="col-12">
-                            <label class="form-label small gold-text">Contact Number</label>
-                            <input type="text" name="phone" class="form-control bg-dark text-white border-secondary"
-                                required>
+                            <label class="form-label small text-muted text-uppercase fw-bold">Phone Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-dark border-secondary text-muted"><i
+                                        class="bi bi-telephone"></i></span>
+                                <input type="text" name="phone" class="form-control bg-dark text-white border-secondary"
+                                    placeholder="+44 20 7946 0000" required>
+                            </div>
                         </div>
                         <div class="col-12">
-                            <label class="form-label small gold-text">Admin Password</label>
-                            <input type="password" name="password"
-                                class="form-control bg-dark text-white border-secondary"
-                                placeholder="Default: password123">
+                            <label class="form-label small text-muted text-uppercase fw-bold">Admin Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-dark border-secondary text-muted"><i
+                                        class="bi bi-lock"></i></span>
+                                <input type="password" name="password"
+                                    class="form-control bg-dark text-white border-secondary"
+                                    placeholder="Default: password123">
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" name="add_admin" class="btn btn-kingsman px-4">Appoint Admin</button>
+                <div class="modal-footer border-gold">
+                    <button type="button" class="btn btn-secondary btn-sm px-4" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" name="add_admin" class="btn btn-kingsman btn-sm px-4">Add
+                        Administrator</button>
                 </div>
             </form>
         </div>
@@ -252,40 +274,43 @@ include dirname(__DIR__) . '/includes/header.php';
 <!-- Edit Admin Modal -->
 <div class="modal fade" id="editAdminModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-dark border-gold text-white">
-            <div class="modal-header border-secondary">
-                <h5 class="modal-title gold-text">Revise Admin Protocol</h5>
+        <div class="modal-content kingsman-card glass-panel border-gold shadow-lg">
+            <div class="modal-header border-gold">
+                <h5 class="modal-title gold-text small text-uppercase" style="letter-spacing: 2px;">
+                    <i class="bi bi-pencil-square me-2"></i> Edit Administrator
+                </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <form method="POST">
                 <input type="hidden" name="user_id" id="editAdminId">
-                <div class="modal-body p-4">
-                    <div class="row g-3">
+                <div class="modal-body py-4 px-5">
+                    <div class="row g-4">
                         <div class="col-md-6">
-                            <label class="form-label small gold-text">First Name</label>
+                            <label class="form-label small text-muted text-uppercase fw-bold">First Name</label>
                             <input type="text" name="firstname" id="editFirstname"
                                 class="form-control bg-dark text-white border-secondary" required>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small gold-text">Last Name</label>
+                            <label class="form-label small text-muted text-uppercase fw-bold">Last Name</label>
                             <input type="text" name="lastname" id="editLastname"
                                 class="form-control bg-dark text-white border-secondary" required>
                         </div>
                         <div class="col-12">
-                            <label class="form-label small gold-text">Official Email</label>
+                            <label class="form-label small text-muted text-uppercase fw-bold">Official Email</label>
                             <input type="email" name="email" id="editEmail"
                                 class="form-control bg-dark text-white border-secondary" required>
                         </div>
                         <div class="col-12">
-                            <label class="form-label small gold-text">Contact Number</label>
+                            <label class="form-label small text-muted text-uppercase fw-bold">Contact Number</label>
                             <input type="text" name="phone" id="editPhone"
                                 class="form-control bg-dark text-white border-secondary" required>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer border-secondary">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Abstain</button>
-                    <button type="submit" name="edit_admin" class="btn btn-kingsman px-4">Update Details</button>
+                <div class="modal-footer border-gold">
+                    <button type="button" class="btn btn-secondary btn-sm px-4" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" name="edit_admin" class="btn btn-kingsman btn-sm px-4">Update
+                        Administrator</button>
                 </div>
             </form>
         </div>
@@ -305,7 +330,7 @@ include dirname(__DIR__) . '/includes/header.php';
 
     function confirmDelete(id) {
         Swal.fire({
-            title: 'Revoke Credentials?',
+            title: 'Delete Administrator?',
             text: "This will permanently remove this administrator from the system.",
             icon: 'warning',
             showCancelButton: true,
@@ -313,7 +338,7 @@ include dirname(__DIR__) . '/includes/header.php';
             color: '#fff',
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
-            confirmButtonText: 'CONFIRM REVOCATION',
+            confirmButtonText: 'CONFIRM DELETE',
             cancelButtonText: 'CANCEL'
         }).then((result) => {
             if (result.isConfirmed) {
